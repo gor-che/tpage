@@ -1,18 +1,30 @@
 <html>
 <head>
   <title>index</title>
+  <style>
+    #table{
+      height: 60px;
+      margin-left: auto;
+      margin-right: auto;
+      overflow:scroll;}
+    td{border: 1px solid black;}
+  </style>
 </head>
 <body>
 <center>Index page</center>
-<table id="table"></table>
+<div id="divTable" style="height: 50px; overflow: auto;">
+<table id="table" onscroll="myFunction()"></table>
+</div>
 
 <script src="https://ws.n2o.dev/priv/utf8.js"></script>
 <script src="https://ws.n2o.dev/priv/bert.js"></script>
 <script src="https://ws.n2o.dev/priv/heart.js"></script>
 <script src="https://ws.n2o.dev/priv/n2o.js"></script>
-<script>host = location.hostname; port = 50111;</script>
+<script>host = location.hostname; port = 8888;</script>
 <script src="https://ws.n2o.dev/priv/ftp.js"></script>
 <script src="https://nitro.n2o.dev/priv/js/nitro.js"></script>
+<script src="js/table.js"></script>
+
 <script>protos = [$bert]; N2O_start();</script>
 </body>
 </html>
