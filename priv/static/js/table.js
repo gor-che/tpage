@@ -8,6 +8,10 @@ qi('divTable').addEventListener("scroll", function(e){
 
 function update_table(scrll){
   r = qi('table')['data-rid'];
-  console.log(r);
-  direct(tuple(atom('append_rows'), string('table'), string(r)))
+  console.log([scrll, 10 + scrll + qi('divTable').offsetHeight, qi('table').offsetHeight ]);
+  
+  if(scrll + qi('divTable').offsetHeight + 10 > qi('table').offsetHeight ){
+    direct(tuple(atom('append_rows'), string('table'), string(r)))
+  }
+  
 }

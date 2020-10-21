@@ -4,6 +4,9 @@ defmodule Tpage.Index do
   require KVS
 
   def event(:init) do
+    remote = '/points'
+    Enum.each(:kvs.all(remote), &:kvs.delete(remote, elem(&1,1)))
+    for x <- :lists.seq(1,100), do: :kvs.append({:data, :rand.uniform(100000)}, '/points')
     event(:build_table)
   end
 
@@ -33,7 +36,7 @@ defmodule Tpage.Index do
         NITRO.td(body: :nitro.to_binary(elem(r,1))),
         NITRO.td(body: :nitro.to_binary("point")),
       ])
-      :nitro.insert_top(:table, row)
+      :nitro.insert_bottom(:table, row)
     end
     
   end
