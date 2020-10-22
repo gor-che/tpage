@@ -2,17 +2,23 @@
 <head>
   <title>index</title>
   <style>
+    #divTable{
+      height: auto;
+      max-height: 100%;
+      overflow: auto;  
+    }
     #table{
-      height: 160px;
+      /* position: relative; */
+      /* height: auto; */
       margin-left: auto;
       margin-right: auto;
-      overflow:scroll;}
+      }
     td{border: 1px solid black;}
   </style>
 </head>
 <body>
 <center>Index page</center>
-<div id="divTable" style="height: 150px; overflow: auto;">
+<div id="divTable" style=" ">
 <table id="table" onscroll="myFunction()"></table>
 </div>
 

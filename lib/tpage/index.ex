@@ -5,16 +5,18 @@ defmodule Tpage.Index do
 
   def event(:init) do
     remote = '/points'
+    #:rand.uniform(100000)
     Enum.each(:kvs.all(remote), &:kvs.delete(remote, elem(&1,1)))
-    for x <- :lists.seq(1,100), do: :kvs.append({:data, :rand.uniform(100000)}, '/points')
+    for x <- :lists.seq(1,100), do: :kvs.append({:data, x}, '/points')
     event(:build_table)
   end
 
   def event(:build_table) do
     KVS.reader(id: rid) = :kvs.save(:kvs.reader('/points'))
     IO.inspect(rid, label: "reader")
-    :nitro.wire("qi('table')['data-rid']= #{rid};")
-    show_rows('/points', rid)    
+    
+    show_rows('/points', rid)
+    :nitro.wire("qi('table')['data-rid']= #{rid};set_height();")
   end
 
   def event({:append_rows, tableId, readerId}) do
@@ -27,7 +29,7 @@ defmodule Tpage.Index do
   end
 
   def show_rows(feed, rid) do
-    d = :kvs.take(KVS.reader(:kvs.load_reader(rid), args: 4, dir: 0))
+    d = :kvs.take(KVS.reader(:kvs.load_reader(rid), args: 10, dir: 0))
     :kvs.save(d)
     KVS.reader(args: rows, id: rid) = d
 
