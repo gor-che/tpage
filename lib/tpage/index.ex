@@ -5,6 +5,7 @@ defmodule Tpage.Index do
 
   def event(:init) do
     remote = '/points'
+    #:nitro.wire("alert(\"wire\");")
     #:rand.uniform(100000)
     Enum.each(:kvs.all(remote), &:kvs.delete(remote, elem(&1,1)))
     for x <- :lists.seq(1,100), do: :kvs.append({:data, x}, '/points')
@@ -30,15 +31,22 @@ defmodule Tpage.Index do
     :kvs.save(d)
     KVS.reader(args: rows) = d
     for tr <- rows do
-      row = NITRO.tr(cells: [
-        NITRO.td(body: :nitro.to_binary(elem(tr, 1))),
-        NITRO.td(body: :nitro.to_binary("point"))
+      row = NITRO.tr(
+        id: :nitro.to_atom(elem(tr, 1)),
+        cells: [
+          NITRO.td(body: :nitro.to_binary(elem(tr, 1))),
+          NITRO.td(body: :nitro.to_binary("point"))
       ])
       :nitro.insert_top(:table, row)
     end
   end
 
+  def event({:scroll, data}) do
+    IO.inspect(["send_scrl", data])
+  end
+
   def event(mess) do
+    # :scroll.event(mess)
     IO.inspect(mess, label: "Undef event")
   end
 
@@ -48,10 +56,13 @@ defmodule Tpage.Index do
     KVS.reader(args: rows, id: rid) = d
 
     for r <- rows do
-      row = NITRO.tr(cells: [
-        NITRO.td(body: :nitro.to_binary(elem(r,1))),
-        NITRO.td(body: :nitro.to_binary("point"))
-      ])
+      row = NITRO.tr(
+        id: :nitro.to_atom(elem(r, 1)),
+        cells: [
+          NITRO.td(body: :nitro.to_binary(elem(r,1))),
+          NITRO.td(body: :nitro.to_binary("point"))
+        ]
+      )
       :nitro.insert_bottom(:table, row)
     end
     

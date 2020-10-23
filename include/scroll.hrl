@@ -1,0 +1,1 @@
+-record(scroll, {event = [] :: list() | binary()}).

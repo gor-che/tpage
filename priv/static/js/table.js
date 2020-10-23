@@ -1,9 +1,33 @@
+// var scroll = {
+//   send: function (event) {
+//     ws.send(enc(tuple(atom('scroll'),
+//         bin(event)
+//     )));
+//   }
+// }
+
+var scroll = {
+  tableId: 'table'
+  // send: function (event) {
+  //   ws.send(enc(tuple(atom('scroll'),
+  //       bin(event)
+  //   )));
+  // }
+}
+
 //object.addEventListener("scroll", myScript);
 qi('divTable').addEventListener("scroll", function(e){
   console.log(["scrll",e]);
   let target = e.target;
   update_table(target.scrollTop);
-  
+  console.log("scroll");
+
+
+
+  //direct(tuple(atom("scroll"),string(e)));
+  // ws.send(enc(tuple(atom('api'),
+  //   bin(e)
+  // )));
 });
 
 function update_table(scrll){

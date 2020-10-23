@@ -4,7 +4,7 @@ config :n2o,
   mq: :n2o_syn,
   port: 8888,
   tables: [:cookies, :ws, :tcp, :async],
-  protocols: [:nitro_n2o, :n2o_heart],
+  protocols: [:nitro_n2o, :n2o_heart, :scroll],
   routes: Tpage.Routes
 
 config :kvs,
