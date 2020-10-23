@@ -1,33 +1,31 @@
-// var scroll = {
-//   send: function (event) {
-//     ws.send(enc(tuple(atom('scroll'),
-//         bin(event)
-//     )));
-//   }
-// }
-
-var scroll = {
-  tableId: 'table'
-  // send: function (event) {
-  //   ws.send(enc(tuple(atom('scroll'),
-  //       bin(event)
-  //   )));
-  // }
+scroll = {
+  tableId: '',
+  parentHeight: '',
+  tHeigh: '',
+  offsetAcc: 0,
+  offset: 0
 }
 
-//object.addEventListener("scroll", myScript);
 qi('divTable').addEventListener("scroll", function(e){
   console.log(["scrll",e]);
   let target = e.target;
   update_table(target.scrollTop);
   console.log("scroll");
 
+  scroll.tableId = 'table';
+  scroll.parentHeight =  qi('divTable').offsetHeight;
+  scroll.tHeigh = qi('table').offsetHeight;
+  scroll.offset = target.scrollTop;
 
+  ws.send(enc(tuple(atom('api'),
+    string(scroll.tableId),
+    string(scroll.parentHeight),
+    string(scroll.tHeigh),
+    string(scroll.offsetAcc),
+    string(scroll.offset),
+  )));
 
-  //direct(tuple(atom("scroll"),string(e)));
-  // ws.send(enc(tuple(atom('api'),
-  //   bin(e)
-  // )));
+  scroll.offsetAcc = scroll.offset;
 });
 
 function update_table(scrll){

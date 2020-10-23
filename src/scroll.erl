@@ -7,6 +7,10 @@
 render_action(Record) ->
   io:format("info data: ~p~n", [Record]).
 
+info({api,_,_,_,_,_} = Data, Req, State)->
+  io:format("api event: ~p~n", [Data]),
+  {reply, {bert, []}, Req, State};
+
 info(Data, Req, State)->
   io:format("info data: ~p~n", [Data]),
   {reply, {bert, []}, Req, State};
