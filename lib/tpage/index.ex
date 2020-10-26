@@ -5,7 +5,8 @@ defmodule Tpage.Index do
 
   def event(:init) do
     remote = '/points'
-    #:nitro.wire("alert(\"wire\");")
+    #:nitro.wire({:api, })
+    :scroll.event(:init)
     #:rand.uniform(100000)
     Enum.each(:kvs.all(remote), &:kvs.delete(remote, elem(&1,1)))
     for x <- :lists.seq(1,100), do: :kvs.append({:data, x}, '/points')

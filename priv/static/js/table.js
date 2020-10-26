@@ -6,28 +6,6 @@ scroll = {
   offset: 0
 }
 
-qi('divTable').addEventListener("scroll", function(e){
-  console.log(["scrll",e]);
-  let target = e.target;
-  update_table(target.scrollTop);
-  console.log("scroll");
-
-  scroll.tableId = 'table';
-  scroll.parentHeight =  qi('divTable').offsetHeight;
-  scroll.tHeigh = qi('table').offsetHeight;
-  scroll.offset = target.scrollTop;
-
-  ws.send(enc(tuple(atom('api'),
-    string(scroll.tableId),
-    string(scroll.parentHeight),
-    string(scroll.tHeigh),
-    string(scroll.offsetAcc),
-    string(scroll.offset),
-  )));
-
-  scroll.offsetAcc = scroll.offset;
-});
-
 function update_table(scrll){
   r = qi('table')['data-rid'];
   dt = qi('divTable');
