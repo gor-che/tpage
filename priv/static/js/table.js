@@ -7,56 +7,55 @@ scroll = {
 }
 
 function update_table(scrll){
+  t = qi('table');
   r = qi('table')['data-rid'];
   dt = qi('divTable');
   acc = qi('table')['data-scroll']
-  console.log([scrll, qi('divTable').offsetHeight, qi('table').offsetHeight ]);
-  
-  // move down
-  if(scrll + qi('divTable').offsetHeight + 11 > qi('table').offsetHeight ){
-    direct(tuple(atom('append_rows'), string('table'), string(r)))
+    
+  //moving down
+  if(acc !=0 && scrll > acc){
+
+      t.childNodes.forEach(tr => {
+        if(t.childNodes[0].getBoundingClientRect().y < scrll - dt.clientHeight * 1.5){
+          console.log("delete bottom row");
+          t.removeChild(t.childNodes[0])
+        }
+      });
+
+      if(qi('divTable').clientHeight * 2 > qi('table').clientHeight){
+      //   console.log("add_row_after");
+         direct(tuple(atom('append_rows'), string('table'), string(r)))}
   }
 
-  // move up
-  if(scrll < acc){
-    direct(tuple(atom('append_row_before'), string('table'), string(r)))
-    t.childNodes.forEach(tr => {
-      if(tr.getBoundingClientRect().y > scrll + dt.clientHeight){
-        t.removeChild(tr)
-      }}
-    );
-    console.log('MOVE_BACK');
+  //moving up
+  if(acc!=0 && scrll < acc){
+
+    if(t.childNodes[t.childNodes.length-1].getBoundingClientRect().y > scrll + dt.clientHeight * 1.5){
+        console.log(["del_after_in_append_before"]);
+         t.removeChild(t.childNodes[t.childNodes.length-1])
+    }
+
+    if(qi('divTable').clientHeight * 2 < qi('table').clientHeight){
+        firstId= qi('table').childNodes[0].id
+        console.log(["move_up#",scrll  ,qi('table').offsetHeight - qi('divTable').offsetHeight]);
+      direct(tuple(atom('append_row_before'), string('table'), string(r),string(firstId)))
+    }
   }
 
-  set_height();
+  set_height(scrll);
   qi('table')['data-scroll'] = scrll;
 }
 
-function set_height(){
+function set_height(scrll){
   r = qi('table')['data-rid'];
   t = qi('table');
   div = qi('divTable').clientHeight;
   table = t.clientHeight;
-  console.log(["#", div, table]);
+  
   if(div >= table){
+    console.log(["append#", div, table]);
     direct(tuple(atom('append_rows'), string('table'), string(r)))
   }
   
   qi('divTable').height = t.clientHeight - 10;
-  //console.log([t.clientHeight, qi('divTable').clientHeight]);
-
-  tH = t.clientHeight;
-  tScrl = t.scrollTop;
-  dt = t.clientHeight;
-
-  // t.childNodes.forEach(tr => {
-  //   if(tr.getBoundingClientRect().y < 0){
-  //     t.removeChild(tr)
-  //   }}
-  // );
-  
-  console.log([tH, tScrl, dt]);
-  // if(tH){
-
-  // }
 }
