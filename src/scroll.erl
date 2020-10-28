@@ -46,74 +46,57 @@ info(Mess, Req, State) ->
   io:format("unknown data: ~p~n", [Mess]),
   {unknown, Mess, Req, State}.
 
-event(init)->
-  Feed = '/points',
-  %kvs:save(kvs:writer(Feed)),
-  %[kvs:delete(Feed,element(2,X)) || X <- kvs:all(Feed)],
-  %[kvs:append({data, X},Feed) || X <- lists:seq(1,100)],
+%%%%%%%%%%%
 
-  build_table(Feed),
+event(init)->
+  build_table([]),
   nitro:wire(#scroll{name=scroll,delegate=scroll});
 
 event({scroll,TId,ParH,TH,OffsetAcc,Offset} = Data)->
-  if Offset > OffsetAcc, ParH *2 > TH -> 
+  if Offset >= OffsetAcc, ParH *2 > TH  -> 
     add_row([],1),
     io:format("move down");
     true -> true
   end,
-  if Offset < OffsetAcc, ParH *2 < TH -> 
+
+  io:format("~p <= ~p , ~p > ~p~n", [Offset, OffsetAcc, ParH *2, TH]),
+  if Offset =< OffsetAcc, ParH *2 > TH -> 
     insert_tr_before([],-1),
+    nitro:wire("set_height(0);"),
     io:format("move up");
     true -> true
   end,
+  
   io:format("SCRL EV: ~p~n",[Data]).
 
-build_table(Feed)->
-  %Rid = element(2,kvs:save(kvs:reader(Feed))),
-  %nitro:wire("qi('table')['data-rid']= #{rid};
-  %set_height(qi('table')['data-scroll']);"),
-  %io:format("rid: ~p~n",[kvs:load_reader(Rid)]),
-  add_row(Feed, 1).
+check_height({scroll,TId,ParH,TH,OffsetAcc,Offset})->
+  io:format("~p >= ~p",[ParH,TH]),
+  if ParH >= TH -> add_row([],1);
+    true -> true
+  end.
+
+build_table([])->
+  add_row([], 1).
 
 add_row(_Feed, _Rid)->
-  %D = take(Feed, Rid),
-  %io:format("D: ~p~n",[element(5,D)]),
   rend_row([],1),
-  % if length(element(5,D)) > 0 ->
-  %     [rend_row(R,1) || R <- element(5,D)];
-  %   true -> nothing
-  % end,
-  nitro:wire("set_height(qi('table')['data-scroll']);").
+  nitro:wire("set_height(0);").
+
+insert_tr_before(_,_)->
+  io:format("inserting before ~n"),
+  rend_row([],-1).  
 
 rend_row(_Data, F)->
   Id = rand:uniform(),
-  Row = #tr{id=Id,%element(2,Data),
-    cells=[#td{body=nitro:to_binary(Id)},%element(2,Data))},
+  Row = #tr{id=Id,
+    cells=[#td{body=nitro:to_binary(Id)},
           #td{body= "point"}]},
   case F of
     -1 -> 
-      R = nitro:insert_top(table, Row),
-      io:format("REsINSERT: ~p~nROW-1!: ~p~n",[R,Row]);
+      io:format("ROW-1!: ~p~n",[Row]);
       
     1 ->
       io:format("ROW!1: ~p~n",[Id]), 
       nitro:insert_bottom(table, Row);
     _ -> nothing
   end.
-
-% take(_Feed, RId)->
-%   D = kvs:take(setelement(5,kvs:load_reader(RId),3)),
-%   kvs:save(D),
-%   D.
-
-insert_tr_before(Feed,RId)->
-  io:format("inserting before ~n"),
-  rend_row([],-1).
-  % D = take(Feed,RId),
-  % if length(element(5,D)) > 0 ->
-  %     [rend_row(R,-1) || R <- element(5,D)];
-  %   true -> nothing
-  % end.
-
-check_height(#scroll{parentHeight=ph, tableHeight=th})->
-  io:format("PH: ~p~n TH: ~p~n",[ph,th]).

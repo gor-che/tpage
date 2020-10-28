@@ -5,15 +5,6 @@ defmodule Tpage.Index do
 
   def event(:init) do
     :scroll.event(:init)
-    event(:build_table)
-  end
-
-  def event(:build_table) do
-    KVS.reader(id: rid) = :kvs.save(:kvs.reader('/points'))
-    IO.inspect(rid, label: "reader")
-    
-    #show_rows('/points', rid)
-    # :nitro.wire("qi('table')['data-rid']= #{rid};set_height(qi('table')['data-scroll']);")
   end
 
   def event({:append_rows, tableId, readerId}) do
