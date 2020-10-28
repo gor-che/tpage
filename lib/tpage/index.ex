@@ -13,13 +13,13 @@ defmodule Tpage.Index do
     IO.inspect(rid, label: "reader")
     
     #show_rows('/points', rid)
-    :nitro.wire("qi('table')['data-rid']= #{rid};set_height(qi('table')['data-scroll']);")
+    # :nitro.wire("qi('table')['data-rid']= #{rid};set_height(qi('table')['data-scroll']);")
   end
 
   def event({:append_rows, tableId, readerId}) do
     IO.inspect("UPPEND EVENT")
     :scroll.add_row('/points',readerId)#show_rows('/points', readerId)
-    :nitro.wire("set_height(qi('table')['data-scroll']);")
+    #:nitro.wire("set_height(qi('table')['data-scroll']);")
   end
 
   def event({:append_row_before, tId, rId, fId} = mes) do
@@ -46,8 +46,8 @@ defmodule Tpage.Index do
     # end
   end
 
-  def event({:scroll, data}) do
-    IO.inspect(["send_scrl", data])
+  def event({:scroll, _tid, _parH, _tH, _offsetAcc, _offset}=data) do
+    :scroll.event(data)
   end
 
   def event(mess) do

@@ -22,9 +22,9 @@ function update_table(scrll){
         }
       });
 
-      if(qi('divTable').clientHeight * 2 > qi('table').clientHeight){
+    //if(qi('divTable').clientHeight * 2 > qi('table').clientHeight){
       //   console.log("add_row_after");
-         direct(tuple(atom('append_rows'), string('table'), string(r)))}
+         //direct(tuple(atom('append_rows'), string('table'), string(r)))}
   }
 
   //moving up
@@ -35,11 +35,11 @@ function update_table(scrll){
          t.removeChild(t.childNodes[t.childNodes.length-1])
     }
 
-    if(qi('divTable').clientHeight * 2 < qi('table').clientHeight){
-        firstId= qi('table').childNodes[0].id
-        console.log(["move_up#",scrll  ,qi('table').offsetHeight - qi('divTable').offsetHeight]);
-      direct(tuple(atom('append_row_before'), string('table'), string(r),string(firstId)))
-    }
+    // if(qi('divTable').clientHeight * 2 < qi('table').clientHeight){
+    //     firstId= qi('table').childNodes[0].id
+    //     console.log(["move_up#",scrll  ,qi('table').offsetHeight - qi('divTable').offsetHeight]);
+    //   direct(tuple(atom('append_row_before'), string('table'), string(r),string(firstId)))
+    // }
   }
 
   set_height(scrll);
