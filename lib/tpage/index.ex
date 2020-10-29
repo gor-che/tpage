@@ -7,6 +7,10 @@ defmodule Tpage.Index do
     :scroll.event(:init)
   end
 
+  def event({:fill_table, _tId, _rid}) do
+    :scroll.fill_table()
+  end
+
   def event({:append_rows, tableId, readerId}) do
     IO.inspect("UPPEND EVENT")
     :scroll.add_row('/points',readerId)#show_rows('/points', readerId)

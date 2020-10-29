@@ -5,7 +5,7 @@
 
 -compile(export_all).
 
-render_action(Record) ->
+render_action(#scroll{offset=[]}=Record) ->
   io:format("RENDER data: ~p~n", [Record]),
     _Name = Record#scroll.name,
     
@@ -26,7 +26,10 @@ render_action(Record) ->
       ));
 
       scroll.offsetAcc = scroll.offset;
-    });".
+    });";
+  render_action(Record)->
+    io:format("REND_ACT~p~n",[Record])
+    .
 
 
 
@@ -76,15 +79,21 @@ check_height({scroll,TId,ParH,TH,OffsetAcc,Offset})->
   end.
 
 build_table([])->
-  add_row([], 1).
+  %add_row([], 1),
+  nitro:wire("fill_table();").
 
 add_row(_Feed, _Rid)->
   rend_row([],1),
   nitro:wire("set_height(0);").
 
+fill_table()->
+  rend_row([],1),
+  nitro:wire("fill_table();").
+
 insert_tr_before(_,_)->
   io:format("inserting before ~n"),
-  rend_row([],-1).  
+  rend_row([],-1),
+  nitro:wire("set_height(0);").  
 
 rend_row(_Data, F)->
   Id = rand:uniform(),
@@ -93,8 +102,8 @@ rend_row(_Data, F)->
           #td{body= "point"}]},
   case F of
     -1 -> 
-      io:format("ROW-1!: ~p~n",[Row]);
-      
+      io:format("ROW-1!: ~p~n",[Row]),
+      nitro:insert_top(table, Row);
     1 ->
       io:format("ROW!1: ~p~n",[Id]), 
       nitro:insert_bottom(table, Row);
