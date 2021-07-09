@@ -2,7 +2,9 @@
 
 to start app, just put in terminal: 
 
+```
   iex -S mix
+```
 
 That programm was created for find way use scroll instead pagination.
 Still in progress
