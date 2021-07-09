@@ -1,6 +1,13 @@
 # Tpage
 
-**TODO: Add description**
+to start app, just put in terminal: 
+
+  iex -S mix
+
+That programm was created for find way use scroll instead pagination.
+Still in progress
+
+Based on n2o framework and kvs database
 
 ## Installation
 
@@ -14,8 +21,4 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/tpage](https://hexdocs.pm/tpage).
 
